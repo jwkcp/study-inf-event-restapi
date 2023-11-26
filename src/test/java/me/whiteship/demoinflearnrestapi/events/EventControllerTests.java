@@ -20,7 +20,6 @@ public class EventControllerTests {
         mockMvc.perform(post("/api/events/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isCreated());
+                ).andExpect(status().isCreated());
     }
 }
