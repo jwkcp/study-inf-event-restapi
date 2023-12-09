@@ -1,5 +1,7 @@
 package me.whiteship.demoinflearnrestapi.events;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,12 +24,16 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 //}
 
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping(value = "/api/events", produces = MediaTypes.HAL_JSON_VALUE)
 public class EventController {
+    private final EventRepository eventRepository;
+
     @PostMapping
     public ResponseEntity createEvent(@RequestBody Event event) {
-        URI createdUri = linkTo(EventController.class).slash("{id}").toUri();
+        Event savedEvent = eventRepository.save(event);
+        URI createdUri = linkTo(EventController.class).slash(savedEvent.getId()).toUri();
         event.setId(10);
         return ResponseEntity.created(createdUri).body(event);
     }
