@@ -15,11 +15,13 @@ public class EventControllerTests {
     @Autowired
     MockMvc mockMvc;
 
+    private static final MediaType HAL_JSON = MediaType.valueOf("application/hal+json");
+
     @Test
     public void createEvent() throws Exception {
-        mockMvc.perform(post("/api/events/")
+        mockMvc.perform(post("/api/events")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
+                        .accept(HAL_JSON)
                 ).andExpect(status().isCreated());
     }
 }
