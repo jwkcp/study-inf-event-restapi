@@ -1,5 +1,6 @@
 package me.whiteship.demoinflearnrestapi.events;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.time.LocalDateTime;
 
@@ -36,6 +38,20 @@ class EventControllerTests {
 //    EventRepository eventRepository;
 
     private static final MediaType HAL_JSON = MediaType.valueOf("application/hal+json");
+
+    @Test
+    void createEvent_Bad_Request_Empty_Input() throws Exception {
+        EventDto eventDto = EventDto.builder().build();
+
+        mockMvc.perform(post("/api/events")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(eventDto))
+                        .accept(HAL_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+    }
 
     @Test
     void createEvent_Bad_Request() throws Exception {
