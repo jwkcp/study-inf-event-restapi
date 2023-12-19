@@ -2,6 +2,7 @@ package me.whiteship.demoinflearnrestapi.events;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.whiteship.demoinflearnrestapi.common.TestDescription;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,6 +41,7 @@ class EventControllerTests {
     private static final MediaType HAL_JSON = MediaType.valueOf("application/hal+json");
 
     @Test
+    @TestDescription(value = "유효하지 않은 값으로 이벤트를 생성하는 테스트")
     void createEvent_Bad_Request_Wrong_Input() throws Exception {
         EventDto eventDto = EventDto.builder()
 //                .id(100)
@@ -68,6 +70,7 @@ class EventControllerTests {
     }
 
     @Test
+    @TestDescription(value = "입력값이 비어있는 경우에 에러가 발생하는 테스트")
     void createEvent_Bad_Request_Empty_Input() throws Exception {
         EventDto eventDto = EventDto.builder().build();
 
@@ -82,6 +85,7 @@ class EventControllerTests {
     }
 
     @Test
+    @TestDescription(value = "입력받을 수 없는 값을 사용한 경우에 에러가 발생하는 테스트")
     void createEvent_Bad_Request() throws Exception {
         Event event = Event.builder()
                 .id(100)
@@ -120,6 +124,7 @@ class EventControllerTests {
     }
 
     @Test
+    @TestDescription(value = "정상적으로 이벤트를 생성하는 테스트")
     void createEvent() throws Exception {
         EventDto eventDto = EventDto.builder()
 //                .id(100)
