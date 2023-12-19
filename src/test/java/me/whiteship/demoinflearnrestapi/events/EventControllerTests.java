@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@WebMvcTest
 @SpringBootTest
 @AutoConfigureMockMvc
-public class EventControllerTests {
+class EventControllerTests {
     @Autowired
     MockMvc mockMvc;
 
@@ -50,13 +51,12 @@ public class EventControllerTests {
                 .maxPrice(200)
                 .limitOfEnrollment(100)
                 .location("강남역 2번 출구")
+                .free(true)
+                .offline(false)
                 .build();
 
 //        event.setId(10);
-//        Mockito.when(eventRepository.save(event)).thenReturn(event);
-        // event와 동일한 객체가 아니라 Event타입이면 어떤 객체가 와도 상관없다는 Mokito로 사용
-
-//        Mockito.when(eventRepository.save(Mockito.any(Event.class))).thenReturn(event);
+        Mockito.when(eventRepository.save(any(Event.class))).thenReturn(event);
 
         mockMvc.perform(post("/api/events")
                         .contentType(MediaType.APPLICATION_JSON)
