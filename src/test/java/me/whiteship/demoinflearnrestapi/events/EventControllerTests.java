@@ -32,8 +32,8 @@ class EventControllerTests {
     @Autowired
     ObjectMapper objectMapper;
 
-    @MockBean
-    EventRepository eventRepository;
+//    @MockBean
+//    EventRepository eventRepository;
 
     private static final MediaType HAL_JSON = MediaType.valueOf("application/hal+json");
 
@@ -56,7 +56,7 @@ class EventControllerTests {
                 .build();
 
 //        event.setId(10);
-        Mockito.when(eventRepository.save(any(Event.class))).thenReturn(event);
+//        Mockito.when(eventRepository.save(any(Event.class))).thenReturn(event);
 
         mockMvc.perform(post("/api/events")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -71,6 +71,7 @@ class EventControllerTests {
                 .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
                 .andExpect(jsonPath("id").exists())
                 .andExpect(jsonPath("id").value(Matchers.not(100)))
-                .andExpect(jsonPath("free").value(Matchers.not(true)));
+                .andExpect(jsonPath("free").value(Matchers.not(true)))
+                .andExpect(jsonPath("eventStatus").value(Matchers.equalTo(EventStatus.DRAFT.name())));
     }
 }
