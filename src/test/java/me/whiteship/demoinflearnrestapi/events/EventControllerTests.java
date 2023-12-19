@@ -40,6 +40,34 @@ class EventControllerTests {
     private static final MediaType HAL_JSON = MediaType.valueOf("application/hal+json");
 
     @Test
+    void createEvent_Bad_Request_Wrong_Input() throws Exception {
+        EventDto eventDto = EventDto.builder()
+//                .id(100)
+                .name("Spring")
+                .description("REST API Development with Spring")
+                .beginEnrollmentDateTime(LocalDateTime.of(2018, 11, 11, 16, 12))
+                .closeEnrollmentDateTime(LocalDateTime.of(2018, 11, 21, 16, 12))
+                .beginEventDateTime(LocalDateTime.of(2018, 11, 15, 20, 10))
+                .endEventDateTime(LocalDateTime.of(2018, 12, 15, 10, 10))
+                .basePrice(10000)
+                .maxPrice(200)
+                .limitOfEnrollment(100)
+                .location("강남역 2번 출구")
+//                .free(true)
+//                .offline(false)
+                .build();
+
+        mockMvc.perform(post("/api/events")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(eventDto))
+                        .accept(HAL_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+    }
+
+    @Test
     void createEvent_Bad_Request_Empty_Input() throws Exception {
         EventDto eventDto = EventDto.builder().build();
 
