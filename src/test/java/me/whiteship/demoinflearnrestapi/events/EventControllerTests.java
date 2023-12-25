@@ -49,8 +49,8 @@ class EventControllerTests {
                 .description("REST API Development with Spring")
                 .beginEnrollmentDateTime(LocalDateTime.of(2018, 11, 11, 16, 12))
                 .closeEnrollmentDateTime(LocalDateTime.of(2018, 11, 21, 16, 12))
-                .beginEventDateTime(LocalDateTime.of(2018, 11, 15, 20, 10))
-                .endEventDateTime(LocalDateTime.of(2018, 12, 15, 10, 10))
+                .beginEventDateTime(LocalDateTime.of(2018, 12, 15, 20, 10))
+                .endEventDateTime(LocalDateTime.of(2018, 11, 15, 10, 10))
                 .basePrice(10000)
                 .maxPrice(200)
                 .limitOfEnrollment(100)
@@ -62,10 +62,18 @@ class EventControllerTests {
         mockMvc.perform(post("/api/events")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(eventDto))
-                        .accept(HAL_JSON)
+//                        .accept(HAL_JSON)
                 )
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$[0]").exists())
+                .andExpect(jsonPath("$[0].objectName").exists())
+                .andExpect(jsonPath("$[0].defaultMessage").exists())
+                .andExpect(jsonPath("$[0].code").exists())
+                // Field 에러가 없는 경우 아래 구문으로 테스트가 깨질 수 있음
+//                .andExpect(jsonPath("$[0].field").exists())
+//                .andExpect(jsonPath("$[0].rejectedValue").exists())
+        ;
 
     }
 
